@@ -1,0 +1,72 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background: url("/static/images/mosquito-bg.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    color: white;
+    text-align: justify;
+    padding: 20px;
+}
+.navbar {
+    background: rgba(21, 21, 21, 0.7);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 15px;
+}
+.hero {
+    margin-top: 70px;
+    text-align: center;
+    line-height: 26px;
+    color: whitesmoke;
+    font-size: 17px;
+}
+.hero h1 {
+    font-size: 35px;
+    padding-bottom: 6px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    color: rgb(204, 111, 45);
+}
+.container {
+    margin-top: 30px;
+    margin-left: 40px;
+    max-width: 93%;
+    background: rgba(0, 0, 0, 0.6);
+    font-size: 17px;
+    padding: 20px;
+    border-radius: 10px;
+    line-height: 26px;
+    /* color: rgb(142, 56, 154); */
+    color: whitesmoke;
+    backdrop-filter: blur(5px);
+}
+.container h2{
+    font-size: 24px;
+    padding-bottom: 4px;
+    padding-top: 6px;
+    text-align: center;
+    color: chocolate;
+}
+.container li{
+    list-style: none;
+}
+
+

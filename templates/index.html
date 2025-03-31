@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malaria Prediction System</title>
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="/static/index.css" rel="stylesheet">
+  <style>
+    /* General Styles */
+   
+  </style> 
+</head>
+<body>
+  <nav class="navbar">
+    <a href="#">MalPredict</a>
+    <a href="/">Home</a>
+    <a href="/index">Predict Malaria</a>
+    <a href="/about">About</a>
+  </nav>
+  <!-- <h1>Malaria Prediction System</h1> -->
+  <h2>Enter Temperature, Humidity, and Rainfall to predict a Malaria Outbreak</h2>
+
+  <!-- Form Container -->
+  <div class="container">
+      <div class="input-group">
+          <label for="temperature">Temperature (°C):</label>
+          <input type="number" id="temperature" name="temperature" placeholder="Enter Temperature" required>
+      </div>
+
+      <div class="input-group">
+          <label for="humidity">Humidity (%):</label>
+          <input type="number" id="humidity" name="humidity" placeholder="Enter Humidity" required>
+      </div>
+
+      <div class="input-group">
+          <label for="rainfall">Rainfall (mm):</label>
+          <input type="number" id="rainfall" name="rainfall" placeholder="Enter Rainfall" required>
+      </div>
+
+      <div>
+        <button class="btn" onclick="predictMalaria()">Predict Malaria</button>
+        <button class="btn" onclick="clearFields()">Clear</button>
+      </div>
+      
+  </div>
+
+  <!-- Separate Results Container -->
+  <div id="result" class="result-container"></div>
+
+  <script>
+    async function predictMalaria() {
+      let temp = document.getElementById("temperature").value;
+      let humidity = document.getElementById("humidity").value;
+      let rainfall = document.getElementById("rainfall").value;
+  
+      if (!temp || !humidity || !rainfall) {
+        alert("Please enter all fields!");
+        return;
+      }
+  
+      try {
+        let response = await fetch("/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            temperature: parseFloat(temp),
+            humidity: parseFloat(humidity),
+            rainfall: parseFloat(rainfall) 
+          })
+        });
+  
+        let data = await response.json();
+        if (data.error) {
+          document.getElementById("result").innerHTML = `<span class="error">Error: ${data.error}</span>`;
+        } else {
+          document.getElementById("result").innerHTML = `
+            <p><strong>Prediction:</strong> ${data.prediction}</p>
+            <p><strong>Probability:</strong> ${data.probability}</p>
+            <p><strong>Explanation:</strong> ${data.explanation}</p>
+            <p><strong>Recommendations:</strong> ${data.recommendations}</p>
+          `;
+        }
+      } catch (error) {
+        document.getElementById("result").innerHTML = `<span class="error">Error: ${error.message}</span>`;
+      }
+    }
+    function clearFields() {
+      // Clear input fields
+      document.getElementById("temperature").value = "";
+      document.getElementById("humidity").value = "";
+      document.getElementById("rainfall").value = "";
+      // Clear result container
+      document.getElementById("result").innerHTML = "";
+    }
+  </script>
+  
+</body>
+</html>
