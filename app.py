@@ -46,7 +46,8 @@ def predict():
             recommendations = (
                 "We recommend installing mosquito nets, using insect repellent, "
                 "eliminating standing water around your home, and staying updated on local health alerts. "
-                "Consider visiting a clinic for preventive measures."
+                # "Consider visiting a clinic for preventive measures."
+                "Preparations for malaria prevention should begin immediately"
             )
         else:
             risk_type = "Low risk of malaria"
