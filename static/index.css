@@ -94,6 +94,7 @@ h2 {
 
 .result-container p {
   margin-bottom: 15px;
+  white-space: pre-line; 
 }
 
 .result-container strong {
@@ -105,6 +106,34 @@ h2 {
   color: #ff6b6b;
   font-weight: 500;
 }
+
+/* Download button styling */
+.download-container {
+  max-width: 600px;
+  margin: 0 auto 40px;
+  display: none;
+  justify-content: center;
+}
+
+.download-btn {
+  background: #2c8c84;
+  width: auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+  background: #236b65;
+}
+
+.download-icon {
+  font-size: 1.2rem;
+}
+
 
 @media (max-width: 768px) {
   .container,
