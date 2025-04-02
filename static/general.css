@@ -5,7 +5,7 @@
 }
 body {
     font-family: 'Poppins', sans-serif;
-    background: url("/static/images/mosquito-bg.jpg");
+    background-color:firebrick;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;

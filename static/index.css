@@ -1,6 +1,7 @@
 body {
     font-family: 'Poppins', sans-serif;
-    background: url("/static/images/mosquito-bg.jpg");
+    /* background: url("/static/images/mosquito-bg.jpg"); */
+    background-color:firebrick;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
@@ -17,7 +18,7 @@ body {
     font-size: 24px;
     padding-bottom: 4px;
     padding-top: 6px;
-    color: chocolate;
+    color: yellowgreen;
   }
 
 .navbar {
