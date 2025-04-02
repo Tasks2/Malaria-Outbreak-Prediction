@@ -6,37 +6,73 @@
   <title>Malaria Prediction System</title>
   
   <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="/static/general.css" rel="stylesheet">
   <link href="/static/index.css" rel="stylesheet">
 </head>
 <body>
   <nav class="navbar">
-    <a href="/">Home</a>
-    <a href="/index" id="active">Predict Malaria</a>
-    <a href="/about">About</a>
+    <div>
+      <a href="/">Home</a>
+      <a href="/index" id="active">Predict Malaria</a>
+      <a href="/about">About</a>
+    </div>
   </nav>
-  <!-- <h1>Malaria Prediction System</h1> -->
-  <h2>Enter Temperature, Humidity, and Rainfall to predict a Malaria Outbreak</h2>
+  
+  <h2>Enter Weather Data to Predict Malaria Risk</h2>
 
   <!-- Form Container -->
   <div class="container">
       <div class="input-group">
           <label for="temperature">Temperature (°C):</label>
-          <input type="number" id="temperature" name="temperature" placeholder="Enter Temperature" required>
+          <input 
+            type="number" 
+            id="temperature" 
+            name="temperature" 
+            placeholder="Enter Temperature (20-40°C)" 
+            min="20" 
+            max="40" 
+            step="0.1"
+            required
+            oninput="validateInput(this, 20, 40, 'temperature')"
+          >
+          <span class="validation-message" id="temperature-message"></span>
       </div>
 
       <div class="input-group">
           <label for="humidity">Humidity (%):</label>
-          <input type="number" id="humidity" name="humidity" placeholder="Enter Humidity" required>
+          <input 
+            type="number" 
+            id="humidity" 
+            name="humidity" 
+            placeholder="Enter Humidity (60-80%)" 
+            min="60" 
+            max="80" 
+            step="0.1"
+            required
+            oninput="validateInput(this, 60, 80, 'humidity')"
+          >
+          <span class="validation-message" id="humidity-message"></span>
       </div>
 
       <div class="input-group">
           <label for="rainfall">Rainfall (mm):</label>
-          <input type="number" id="rainfall" name="rainfall" placeholder="Enter Rainfall" required>
+          <input 
+            type="number" 
+            id="rainfall" 
+            name="rainfall" 
+            placeholder="Enter Rainfall (12-200mm)" 
+            min="12" 
+            max="200" 
+            step="0.1"
+            required
+            oninput="validateInput(this, 12, 200, 'rainfall')"
+          >
+          <span class="validation-message" id="rainfall-message"></span>
       </div>
 
       <div>
-        <button class="btn" onclick="predictMalaria()">Predict Malaria</button>
+        <button class="btn" id="predict-btn" onclick="predictMalaria()">Predict</button>
         <button class="btn" onclick="clearFields()">Clear</button>
       </div>
       
@@ -46,7 +82,62 @@
   <div id="result" class="result-container"></div>
 
   <script>
+    // Input validation function
+    function validateInput(input, min, max, fieldName) {
+      const value = parseFloat(input.value);
+      const messageElement = document.getElementById(`${fieldName}-message`);
+      
+      // Clear previous validation message
+      messageElement.textContent = '';
+      input.classList.remove('invalid-input');
+      
+      // Check if value is within range
+      if (input.value === '') {
+        // Empty input is handled by the required attribute
+        return true;
+      } else if (isNaN(value)) {
+        messageElement.textContent = 'Please enter a valid number';
+        input.classList.add('invalid-input');
+        return false;
+      } else if (value < min) {
+        messageElement.textContent = `Value must be at least ${min}`;
+        input.classList.add('invalid-input');
+        return false;
+      } else if (value > max) {
+        messageElement.textContent = `Value must be at most ${max}`;
+        input.classList.add('invalid-input');
+        return false;
+      }
+      
+      return true;
+    }
+
+    // Validate all inputs before submission
+    function validateAllInputs() {
+      const tempValid = validateInput(
+        document.getElementById('temperature'), 
+        20, 40, 'temperature'
+      );
+      
+      const humidityValid = validateInput(
+        document.getElementById('humidity'), 
+        60, 80, 'humidity'
+      );
+      
+      const rainfallValid = validateInput(
+        document.getElementById('rainfall'), 
+        12, 200, 'rainfall'
+      );
+      
+      return tempValid && humidityValid && rainfallValid;
+    }
+
     async function predictMalaria() {
+      // Validate all inputs first
+      if (!validateAllInputs()) {
+        return;
+      }
+      
       let temp = document.getElementById("temperature").value;
       let humidity = document.getElementById("humidity").value;
       let rainfall = document.getElementById("rainfall").value;
@@ -57,6 +148,12 @@
       }
   
       try {
+        // Show loading state
+        const predictBtn = document.getElementById('predict-btn');
+        const originalBtnText = predictBtn.textContent;
+        predictBtn.textContent = 'Predicting...';
+        predictBtn.disabled = true;
+        
         let response = await fetch("/predict", {
           method: "POST",
           headers: {
@@ -70,6 +167,11 @@
         });
   
         let data = await response.json();
+        
+        // Reset button state
+        predictBtn.textContent = originalBtnText;
+        predictBtn.disabled = false;
+        
         if (data.error) {
           document.getElementById("result").innerHTML = `<span class="error">Error: ${data.error}</span>`;
         } else {
@@ -82,8 +184,12 @@
         }
       } catch (error) {
         document.getElementById("result").innerHTML = `<span class="error">Error: ${error.message}</span>`;
+        // Reset button state
+        document.getElementById('predict-btn').textContent = 'Predict';
+        document.getElementById('predict-btn').disabled = false;
       }
     }
+    
     function clearFields() {
       // Clear input fields
       document.getElementById("temperature").value = "";
@@ -91,8 +197,17 @@
       document.getElementById("rainfall").value = "";
       // Clear result container
       document.getElementById("result").innerHTML = "";
+      // Clear validation messages
+      document.querySelectorAll('.validation-message').forEach(el => {
+        el.textContent = '';
+      });
+      // Remove invalid input styling
+      document.querySelectorAll('input').forEach(input => {
+        input.classList.remove('invalid-input');
+      });
     }
   </script>
   
 </body>
 </html>
+
