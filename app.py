@@ -104,8 +104,6 @@ def predict():
                 "Activate rapid response teams for community-based active case detection\n"
                 "Ensure adequate stock of antimalarials (ACTs), IV artesunate, and diagnostic supplies\n"
                 "Prioritize vulnerable populations (pregnant women, children <5, immunocompromised) for prophylactic interventions\n"
-                "Initiate emergency risk communication to healthcare facilities in surrounding regions\n"
-                "Establish additional mobile clinics in underserved areas with limited healthcare access\n "
             )
         else:
             risk_type = "Low risk of malaria"
@@ -141,9 +139,7 @@ def predict():
                 
             recommendations = (
                 "Current environmental conditions indicate reduced malaria transmission potential in Malindi. Recommended clinical preparedness:\n"
-                "Maintain standard malaria surveillance protocols and case reporting systems\n"
                 "Ensure diagnostic supplies (rapid tests, microscopy materials) are within expiration dates\n"
-                "Continue routine vector surveillance in known hotspots\n"
                 "Maintain baseline antimalarial medication inventory\n"
                 "Use this lower-risk period to conduct healthcare staff refresher training on malaria diagnosis and treatment protocols\n"
                 "Consider targeted outreach to educate communities on preventive measures before the high-risk season begins\n "
